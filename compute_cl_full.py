@@ -126,7 +126,7 @@ def get_SDSS(Dcspline = None):
 		Dcspline = sp.interpolate.splrep(zin, Dc)
 
 	skyarea = 7016.41 * (np.pi/180.0)**2
-	dndz = pd.read_csv("/Volumes/Work/UQ/SDSS_dists/data/SDSS_nbar_coarse.dat", delim_whitespace = True, names=["cz", "cz_hist", "nbar"], header=None, skiprows=1)
+	dndz = pd.read_csv("./inputs/SDSS_nbar_coarse.dat", delim_whitespace = True, names=["cz", "cz_hist", "nbar"], header=None, skiprows=1)
 	dndz["z"] = dndz["cz"]/LightSpeed
 	dndz["dz"] = sp.interpolate.splev(dndz["z"].to_numpy(), Dcspline)
 	#print(dndz["z"], dndz["cz_hist"], np.sum(dndz["cz_hist"]))
@@ -141,7 +141,7 @@ def get_DESI(Dcspline = None):
 		Dcspline = sp.interpolate.splrep(zin, Dc)
 
 	skyarea = 14000.0 * (np.pi/180.0)**2
-	dndz = pd.read_csv("/Volumes/Work/UQ/DESI/PV/DESI_PV_fa_nbar_fine.dat", delim_whitespace = True, names=["z", "nbar"], header=None, skiprows=1)
+	dndz = pd.read_csv("./inputs/DESI_PV_fa_nbar_fine.dat", delim_whitespace = True, names=["z", "nbar"], header=None, skiprows=1)
 	dndz = dndz.drop(dndz[dndz["z"] > 0.15].index)
 	dndz["nbar"] *= 0.7**3/1.0e6 
 	dndz["dz"] = sp.interpolate.splev(dndz["z"].to_numpy(), Dcspline)
@@ -160,7 +160,7 @@ def get_4HS(Dcspline = None):
 		Dcspline = sp.interpolate.splrep(zin, Dc)
 
 	skyarea = 17000.0 * (np.pi/180.0)**2
-	dndz = pd.read_csv("/Volumes/Work/UQ/4HS/4HS_nbar_pv_all.dat", delim_whitespace = True, names=["z", "nbar"], header=None, skiprows=1)
+	dndz = pd.read_csv("./inputs/4HS_nbar_pv_all.dat", delim_whitespace = True, names=["z", "nbar"], header=None, skiprows=1)
 	dndz = dndz.drop(dndz[dndz["z"] > 0.15].index)
 	dndz["nbar"] *= 0.7**3/1.0e6 
 	dndz["dz"] = sp.interpolate.splev(dndz["z"].to_numpy(), Dcspline)
@@ -180,7 +180,7 @@ def get_LSST(Dcspline = None):
 		Dcspline = sp.interpolate.splrep(zin, Dc)
 
 	skyarea = 18000.0 * (np.pi/180.0)**2
-	dndz = pd.read_csv("/Volumes/Work/ICRAR/TAIPAN/Mocks/Lightcone_SN-Optical_Lagos12Mill1_simulator_field1_1_nbar_vel_Jlt19p0_new.dat", delim_whitespace = True, names=["z", "nbar"], header=None, skiprows=1)
+	dndz = pd.read_csv("./inputs/Lightcone_SN-Optical_Lagos12Mill1_simulator_field1_1_nbar_vel_Jlt19p0_new.dat", delim_whitespace = True, names=["z", "nbar"], header=None, skiprows=1)
 	dndz = dndz.drop(dndz[dndz["z"] > 0.5].index)
 	dndz["nbar"] *= 0.7**3/1.0e6 
 	dndz["dz"] = sp.interpolate.splev(dndz["z"].to_numpy(), Dcspline)
@@ -321,18 +321,18 @@ def compute_cl_recon(zmax, outputfile):
 
 if __name__ == "__main__":
 
-	#skyarea, dndz = get_SDSS()
+	skyarea, dndz = get_SDSS()
 	#compute_cl(skyarea, dndz, "./C_ell_SDSS.txt")
 
-	#skyarea, dndz = get_DESI()
+	skyarea, dndz = get_DESI()
 	#compute_cl(skyarea, dndz, "./C_ell_DESI.txt")
 
-	#skyarea, dndz = get_4HS()
+	skyarea, dndz = get_4HS()
 	#compute_cl(skyarea, dndz, "./C_ell_4HS.txt")
 
-	#skyarea, dndz = get_LSST()
+	skyarea, dndz = get_LSST()
 	#compute_cl(skyarea, dndz, "./C_ell_LSSTJlt19.txt")
 
-	compute_cl_recon(0.067, "./C_ell_recon_2MRS.txt")
+	#compute_cl_recon(0.067, "./C_ell_recon_2MRS.txt")
 
 
